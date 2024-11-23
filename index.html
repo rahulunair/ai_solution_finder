@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Solution Finder</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1a1f36;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin: 20px 0 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .use-case-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .use-case-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            transition: all 0.2s ease;
+        }
+
+        .use-case-card h2 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            background: #f0f5ff;
+            color: #1557ff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .metrics {
+            display: flex;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .metric {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .solution-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .solution-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .solution-card p {
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .spec-row {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .spec-label {
+            width: 100px;
+            color: #666;
+        }
+
+        .price {
+            color: #00875a;
+            font-weight: 600;
+        }
+
+        .back-button {
+            background: #1557ff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            background: #0040e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Solution Finder</h1>
+            <p>Select your business need to explore AI solutions</p>
+        </div>
+
+        <div id="useCases">
+            <!-- Document Processing -->
+            <div class="use-case-card" onclick="showSolutions('docs')">
+                <h2>Document Processing</h2>
+                <div class="tag-container">
+                    <span class="tag">Invoices</span>
+                    <span class="tag">Contracts</span>
+                    <span class="tag">Medical Records</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        ⚡ 70% time savings
+                    </div>
+                    <div class="metric">
+                        💰 From $0.50/hour
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Support -->
+            <div class="use-case-card" onclick="showSolutions('support')">
+                <h2>Customer Support AI</h2>
+                <div class="tag-container">
+                    <span class="tag">Email Response</span>
+                    <span class="tag">Chatbots</span>
+                    <span class="tag">Ticket Routing</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        ⚡ 24/7 coverage
+                    </div>
+                    <div class="metric">
+                        💰 From $1.20/hour
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Analysis -->
+            <div class="use-case-card" onclick="showSolutions('content')">
+                <h2>Content Analysis</h2>
+                <div class="tag-container">
+                    <span class="tag">Image Processing</span>
+                    <span class="tag">Video Analysis</span>
+                    <span class="tag">Text Classification</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        ⚡ Real-time processing
+                    </div>
+                    <div class="metric">
+                        💰 From $2.00/hour
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="solutions" style="display: none;">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+
+    <script>
+        const solutionConfigs = {
+            docs: {
+                title: "Document Processing Solutions",
+                options: [
+                    {
+                        name: "Essential",
+                        description: "BERT-based processing ideal for smaller organizations",
+                        model: "BERT-Base",
+                        hardware: "Xeon VM",
+                        performance: "Up to 50 pages/minute",
+                        price: "$0.50/hour",
+                        bestFor: "Small-medium businesses, <1000 documents/day"
+                    },
+                    {
+                        name: "Professional",
+                        description: "Advanced processing with higher throughput",
+                        model: "Layout-LM",
+                        hardware: "PVC Single GPU (48GB)",
+                        performance: "Up to 200 pages/minute",
+                        price: "$2.50/hour",
+                        bestFor: "Medium enterprises, 1000-5000 documents/day"
+                    },
+                    {
+                        name: "Enterprise",
+                        description: "High-volume document processing",
+                        model: "Layout-LM-Large",
+                        hardware: "PVC 8-GPU (48GB)",
+                        performance: "Up to 1000 pages/minute",
+                        price: "$15.00/hour",
+                        bestFor: "Large enterprises, >5000 documents/day"
+                    }
+                ]
+            },
+            support: {
+                title: "Customer Support Solutions",
+                options: [
+                    {
+                        name: "Basic",
+                        description: "Email and ticket processing",
+                        model: "MPT-7B",
+                        hardware: "PVC Single GPU (48GB)",
+                        performance: "Up to 20 concurrent sessions",
+                        price: "$1.20/hour",
+                        bestFor: "Small support teams"
+                    },
+                    {
+                        name: "Advanced",
+                        description: "Real-time chat and comprehensive support",
+                        model: "Llama-2-70B",
+                        hardware: "Gaudi2 8-Card",
+                        performance: "Up to 100 concurrent sessions",
+                        price: "$8.00/hour",
+                        bestFor: "Enterprise support operations"
+                    }
+                ]
+            },
+            content: {
+                title: "Content Analysis Solutions",
+                options: [
+                    {
+                        name: "Basic Analysis",
+                        description: "Image and text classification for small scale needs",
+                        model: "ResNet50 + BERT",
+                        hardware: "PVC Single GPU (24GB)",
+                        performance: "Up to 100 items/minute",
+                        price: "$2.00/hour",
+                        bestFor: "Startups and small businesses"
+                    },
+                    {
+                        name: "Professional",
+                        description: "Advanced multi-modal analysis with video processing",
+                        model: "ViT-L + GPT-3",
+                        hardware: "PVC Dual GPU (48GB)",
+                        performance: "Up to 500 items/minute",
+                        price: "$5.00/hour",
+                        bestFor: "Medium businesses with mixed content"
+                    },
+                    {
+                        name: "Enterprise",
+                        description: "High-performance content analysis at scale",
+                        model: "CLIP + GPT-4",
+                        hardware: "PVC 8-GPU Cluster",
+                        performance: "Up to 2000 items/minute",
+                        price: "$20.00/hour",
+                        bestFor: "Large enterprises with high volume"
+                    }
+                ]
+            }
+        };
+
+        function showSolutions(type) {
+            const solutions = document.getElementById('solutions');
+            const useCases = document.getElementById('useCases');
+            const config = solutionConfigs[type];
+
+            if (!config) return;
+
+            let html = `
+                <button class="back-button" onclick="showUseCases()">← Back to Solutions</button>
+                <h2>${config.title}</h2>
+                ${config.options.map(option => `
+                    <div class="solution-card">
+                        <h3>${option.name}</h3>
+                        <p>${option.description}</p>
+                        <div class="spec-row">
+                            <span class="spec-label">Model:</span>
+                            <span>${option.model}</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Hardware:</span>
+                            <span>${option.hardware}</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Performance:</span>
+                            <span>${option.performance}</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Price:</span>
+                            <span class="price">${option.price}</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Best for:</span>
+                            <span>${option.bestFor}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+
+            solutions.innerHTML = html;
+            useCases.style.display = 'none';
+            solutions.style.display = 'block';
+        }
+
+        function showUseCases() {
+            const solutions = document.getElementById('solutions');
+            const useCases = document.getElementById('useCases');
+            
+            solutions.style.display = 'none';
+            useCases.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
